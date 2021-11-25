@@ -1,0 +1,4 @@
+calculate_job:
+  cron: "*/1 * * * *"
+  class: "CalculateJob"
+  queue: default

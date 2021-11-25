@@ -1,0 +1,29 @@
+<h1 class="text-center mt-4">Cryptocurrency transaction costs</h1>
+<div class="row">
+  <div class="col-12">
+    <table class="table table-striped table-dark mt-2">
+      <thead>
+        <tr>
+          <th scope="col">Cryptocurrency</th>
+          <th scope="col">Single transaction cost (USD)</th>
+          <th scope="col">Multisig transaction cost (USD)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cryptos.each do |crypto| %>
+        <tr>
+          <% if crypto.symbol == "BNB" %>
+            <th scope="row">Binance Smart Chain (BSC)</th>
+          <% else %>
+            <th scope="row"><%= crypto.name %> (<%= crypto.symbol %>)</th>
+          <% end %>
+          <td><%= number_to_currency(crypto.last_transaction_cost)%></td>
+          <td><%= number_to_currency(crypto.multisig_transaction_cost) %></td>
+          <td><%= link_to "Edit", edit_cryptocurrency_path(crypto), class: "btn btn-outline-info" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

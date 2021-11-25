@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-10">
+    <%= render 'shared/errors', obj: @crypto %>
+    <%= form_with(model: @crypto, class: "shadow p-3 mb-3 bg-dark rounded", local: true) do |f| %>
+      <div class="form-group row">
+        <%= f.label :symbol, class: "col-2 col-form-label text-light" %>
+        <div class="col-10">
+          <%= f.text_field :symbol, class: "form-control shadow rounded", placeholder: "Symbol of cryptocurrency" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <%= f.label :name, class: "col-2 col-form-label text-light" %>
+        <div class="col-10"> 
+          <%= f.text_field :name, class: "form-control shadow rounded", placeholder: "Name of cryptocurrency" %>
+        </div>
+      </div>
+      
+      <div class="form-group row">
+        <%= f.label :api_url, class: "col-2 col-form-label text-light" %>
+        <div class="col-10"> 
+          <%= f.text_field :api_url, class: "form-control shadow rounded", placeholder: "Current cost Api Url" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <%= f.label :cost_attribute, class: "col-2 col-form-label text-light" %>
+        <div class="col-10"> 
+          <%= f.text_field :cost_attribute, class: "form-control shadow rounded", placeholder: "Cost key attribute" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <%= f.label :multisig_factor, class: "col-2 col-form-label text-light" %>
+        <div class="col-10"> 
+          <%= f.text_field :multisig_factor, class: "form-control shadow rounded", placeholder: "Multisig multiplication factor" %>
+        </div>
+      </div>
+
+      <div class="form-group row justify-content-center">
+        <%= f.submit class: "btn btn-outline-info btn-lg" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="mb-3">
+    <%= link_to '[ Cancel and return to cryptocurrency listing ]', root_path, class: "text-info" %>
+  </div>
+</div>
