@@ -18,12 +18,13 @@
           <% else %>
             <th scope="row"><%= crypto.name %> (<%= crypto.symbol %>)</th>
           <% end %>
-          <td><%= number_to_currency(crypto.last_transaction_cost)%></td>
-          <td><%= number_to_currency(crypto.multisig_transaction_cost) %></td>
+          <td><%= number_to_currency(crypto.last_transaction_cost, unit: "")%></td>
+          <td><%= number_to_currency(crypto.multisig_transaction_cost, unit: "") %></td>
           <td><%= link_to "Edit", edit_cryptocurrency_path(crypto), class: "btn btn-outline-info" %></td>
         </tr>
         <% end %>
       </tbody>
     </table>
+    <!--<p>Last update: <%= distance_of_time_in_words(Time.now, @cryptos.last.updated_at) %> ago</p>-->
   </div>
 </div>

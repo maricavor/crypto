@@ -3,7 +3,8 @@ class CalculateJob < ApplicationJob
 
   def perform(*args)
     Cryptocurrency.all.each do |cc|
-      cc.update(last_transaction_cost: cc.single_transaction_cost)
+      stc = cc.single_transaction_cost
+      cc.update(last_transaction_cost: stc) unless stc.nil?
     end
   end
 end

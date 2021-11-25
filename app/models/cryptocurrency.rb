@@ -1,11 +1,11 @@
 class Cryptocurrency < ApplicationRecord
-  CURRENCY_RATES_API_ENDPOINT = 'https://api.coincap.io/v2/assets'.freeze
-  AMOUNT_OF_BYTES = 192
-  AMOUNT_OF_GAS = 21000
-
   include HttpStatusCodes
   include ApiExceptions
   require 'faraday'
+
+  CURRENCY_RATES_API_ENDPOINT = 'https://api.coincap.io/v2/assets'.freeze
+  AMOUNT_OF_BYTES = 192
+  AMOUNT_OF_GAS = 21000
 
   validates :symbol, presence: true, uniqueness: { case_sensitive: false }
   validates :name, presence: true
@@ -13,32 +13,22 @@ class Cryptocurrency < ApplicationRecord
   def single_transaction_cost
     begin
       if %w[BTC BSV].include? symbol 
-        current_cost * AMOUNT_OF_BYTES * currency_rate * 10**-8
+        current_cost * AMOUNT_OF_BYTES.to_f * currency_rate * 10**-8
       else
-        AMOUNT_OF_GAS * current_cost * currency_rate * 10**-9
+        AMOUNT_OF_GAS.to_f * current_cost * currency_rate * 10**-9
       end
     rescue => e
       #p e.message
-      return 0
+      return nil
     end
   end
 
   def multisig_transaction_cost
-    return single_transaction_cost.to_f * multisig_factor.to_f unless multisig_factor.nil?
+    return last_transaction_cost.to_f * multisig_factor.to_f unless multisig_factor.nil?
     "N/A"
   end
   
   private
-
-  def currency_rate
-    @response = Faraday.get CURRENCY_RATES_API_ENDPOINT
-    if response_successful?
-      parsed_response = Oj.load(@response.body)
-      return parsed_response["data"].find{|cc| cc["symbol"] == symbol}["priceUsd"].to_f
-    else
-      raise error_class, "Symbol: #{symbol}, code: #{@response.status}, response: #{@response.body}"
-    end
-  end
 
   def current_cost
     @response = Faraday.get api_url
@@ -51,6 +41,16 @@ class Cryptocurrency < ApplicationRecord
       else
         return nested_hash_value(parsed_response, cost_attribute).to_f
       end
+    else
+      raise error_class, "Symbol: #{symbol}, code: #{@response.status}, response: #{@response.body}"
+    end
+  end
+
+  def currency_rate
+    @response = Faraday.get CURRENCY_RATES_API_ENDPOINT
+    if response_successful?
+      parsed_response = Oj.load(@response.body)
+      return parsed_response["data"].find{|cc| cc["symbol"] == symbol}["priceUsd"].to_f
     else
       raise error_class, "Symbol: #{symbol}, code: #{@response.status}, response: #{@response.body}"
     end
