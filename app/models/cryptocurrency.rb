@@ -12,10 +12,12 @@ class Cryptocurrency < ApplicationRecord
 
   def single_transaction_cost
     begin
+      cc = current_cost
+      cr = currency_rate
       if %w[BTC BSV].include? symbol 
-        current_cost * AMOUNT_OF_BYTES.to_f * currency_rate * 10**-8
+        cc * AMOUNT_OF_BYTES.to_f * cr * 10**-8
       else
-        AMOUNT_OF_GAS.to_f * current_cost * currency_rate * 10**-9
+        AMOUNT_OF_GAS.to_f * cc * cr * 10**-9
       end
     rescue => e
       #p e.message
