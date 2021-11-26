@@ -39,7 +39,7 @@ class Cryptocurrency < ApplicationRecord
       if symbol == "BSV" && parsed_response.has_key?("payload")
         payload = Oj.load(parsed_response["payload"])
         miningFee = payload["fees"].find{ |f| f["feeType"] == cost_attribute }["miningFee"]
-        return miningFee["satoshis"].to_f / miningFee["bytes"].to_f
+        return miningFee["satoshis"].to_f
       else
         return nested_hash_value(parsed_response, cost_attribute).to_f
       end
