@@ -1,4 +1,4 @@
-Test assignment for WhalesHeaven
+Assignment for WhalesHeaven
 
 Quick start
 -----------
